@@ -1,0 +1,36 @@
+package com.project;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+import com.project.entity.Resource;
+import com.project.repository.ResourceRepository;
+
+@Component
+public class InsertTestData implements ApplicationRunner{
+	@Autowired
+	private DataService dataService;
+	
+	@Autowired
+	private ResourceRepository resourceRepository;
+	
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		// 외부 API에서 데이터를 가져옴
+    	List<Resource> resources = getResources(1, 100);
+    	
+        // 가져온 데이터를 데이터베이스에 저장
+    	for (Resource resource : resources) {
+    		resourceRepository.save(resource); // Resource 엔티티를 DB에 저장
+    	}
+	}
+	
+	// 외부 API에서 받은 데이터를 Resource 엔티티로 변환하여 DB에 저장
+    // DB에 저장 후 insertTestData() 주석처리할 것
+   
+    
+}

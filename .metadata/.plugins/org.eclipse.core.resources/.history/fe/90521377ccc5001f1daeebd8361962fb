@@ -1,0 +1,68 @@
+package com.project.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
+import com.project.dto.ApiResponse;
+import com.project.entity.Resource;
+
+@Service
+public class ApiService {
+	
+	private final String apiUrl = "https://www.eshare.go.kr/eshare-openapi/rsrc/list/010500/ca7d733a83dc3d82b8998a10b6a52883";
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	public ApiResponse getApiData(int pageNo, int numOfRows) {
+		//요청 본문 (body) 데이터 설정
+		String requestBody = "{ \"pageNo\" : " + pageNo + ", \"numOfRows\" : " + numOfRows + " }";
+		
+		//헤더 설정
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		
+		HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+		
+		try {
+            // Post 요청 보내기
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            
+            if (apiResponse != null && apiResponse.getData() != null) {
+                // 공공데이터 API에서 반환되는 데이터를 Resource 객체로 변환
+                List<Resource> resourceList = new ArrayList<>();
+                for (ApiResponse.ResourceData data : apiResponse.getData()) {
+                    Resource resource = new Resource();
+                    resource.setRsrcNo(data.getRsrcNo());
+                    resource.setRsrcNm(data.getRsrcNm());
+                    resource.setZip(data.getZip());
+                    resource.setAddr(data.getAddr());
+                    resource.setDaddr(data.getDaddr());
+                    resource.setLot(data.getLot());
+                    resource.setLat(data.getLat());
+                    resource.setInstUrlAddr(data.getInstUrlAddr());
+                    resource.setImgFileUrlAddr(data.getImgFileUrlAddr());
+                    resourceList.add(resource);
+                }
+                
+                apiResponse.setData(resourceList);
+            }
+            
+            return apiResponse;
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return null;
+		}
+	}
+
+}

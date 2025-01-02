@@ -1,0 +1,24 @@
+package com.project.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.project.entity.Member;
+import com.project.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class MemberService {
+
+	private final MemberRepository memberRepo;
+
+	public List<Member> getMembers() {
+		return memberRepo.findAll();
+	}
+
+	public Member getMember(String username) {
+		return memberRepo.findById(username).get();
+	}
+}

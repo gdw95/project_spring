@@ -1,0 +1,8 @@
+package com.project.domain;
+
+public class BoardVO {
+	private int seq;
+	private String title;
+	private String writer;
+
+}

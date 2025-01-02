@@ -1,0 +1,63 @@
+package com.project;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import com.project.domain.Board;
+import com.project.domain.Member;
+import com.project.domain.Role;
+import com.project.repository.BoardRepository;
+import com.project.repository.MemberRepository;
+
+@Component
+public class MemberInitExecutor implements ApplicationRunner {
+
+	@Autowired
+	private MemberRepository memRepo;
+	@Autowired
+	private BoardRepository boardRepo;
+	@Autowired
+	private PasswordEncoder encoder;
+	
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		Member user = Member.builder()
+						.username("user")
+						.password(encoder.encode("abcd"))
+						.role(Role.ROLE_USER)
+						.nickName("aa")
+						.enabled(true)
+						.build();
+		memRepo.save(user);
+
+		Member manager = Member.builder()
+							.username("manager")
+							.password(encoder.encode("abcd"))
+							.role(Role.ROLE_MANAGER)
+							.nickName("bb")
+							.enabled(true)
+							.build();
+		memRepo.save(manager);
+		
+		for (int i = 1 ; i <= 10 ; i++) {
+			boardRepo.save(Board.builder()
+				.title("title" + i)
+				.content("content" + i)
+				.member(user)
+				.build()
+			);
+		}
+		for (int i = 100 ; i <= 105 ; i++) {
+			boardRepo.save(Board.builder()
+				.title("title" + i)
+				.content("content" + i)
+				.member(manager)
+				.build()
+			);
+		}	
+	}
+}

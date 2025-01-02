@@ -1,0 +1,27 @@
+package com.project.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.DTO.ApiResponse;
+import com.project.service.ApiService;
+
+@RestController
+@RequestMapping("/api/resources")
+public class ApiController {
+	
+	@Autowired
+	private ApiService apiService;
+	
+	@GetMapping
+	public ApiResponse getResources(
+			@RequestParam int pageNo,
+			@RequestParam int numOfRows) {
+		return apiService.getApiData(pageNo, numOfRows);
+	}
+	
+
+}

@@ -1,0 +1,43 @@
+package com.project.service;
+
+import com.project.entity.Resource;
+import com.project.dto.ApiResponse;  // API 응답 DTO
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+@Service
+public class DataService {
+
+    private final String apiUrl = "https://www.eshare.go.kr/eshare-openapi/rsrc/list/010500/ca7d733a83dc3d82b8998a10b6a52883";  // 공공 API URL
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    // 외부 API에서 데이터 조회 (페이징 처리)
+    public List<Resource> getResources(int pageNo, int numOfRows) {
+        // API 요청 본문 (JSON 형식)
+        String requestBody = "{ \"pageNo\" : " + pageNo + ", \"numOfRows\" : " + numOfRows + " }";
+
+        // 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        // 요청 본문과 헤더를 HttpEntity로 설정
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        // API 호출 (Post 요청)
+        ResponseEntity<ApiResponse> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, ApiResponse.class);
+
+        // 응답에서 데이터 가져오기
+        ApiResponse apiResponse = response.getBody();
+        if (apiResponse != null && apiResponse.getData() != null) {
+            return apiResponse.getData();  // 데이터를 반환
+        } else {
+            return List.of();  // 빈 리스트 반환
+        }
+    }
+}

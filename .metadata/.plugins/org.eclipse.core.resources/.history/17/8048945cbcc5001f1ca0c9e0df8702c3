@@ -1,0 +1,44 @@
+package com.project.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.DTO.ApiResponse;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter@Setter
+@RestController
+@RequestMapping("/api/resources")
+public class ApiController {
+	
+	@PostMapping
+	public ResponseEntity<ApiResponse> getResources(@RequestBody RequestBody requestBody) {
+		
+		int pageNo = requestBody.getPageNo();
+		int numOfRows = requestBody.getNumOfRows();
+		
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setResultCode("OK");
+		apiResponse.setResultMsg("정상");
+		apiResponse.setResultCount(8764);
+		
+		return ResponseEntity.ok(apiResponse);
+		
+	}
+	
+	//RequestBody 클래스를 정의
+	@Getter @Setter
+	public static class RequestBody {
+		private int pageNo;
+		private int numOfRows;
+		
+	}
+	
+
+}

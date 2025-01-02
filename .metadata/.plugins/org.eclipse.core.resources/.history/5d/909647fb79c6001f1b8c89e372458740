@@ -1,0 +1,33 @@
+package com.project.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "detailsInfo")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class DetailsInfo {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String addr; // 주소
+	private String rsrcInstNm; // 자원관리기관명(담당자 정보)
+	//private 예약문의 전화번호 
+	//private 준비 시간
+	//private 이용정원
+	private int amt1; // 이용 요금1(이용요금)
+	private String rsrcNm; // 자원명
+	private String lcInsttNm; // 위치기관명(제공기관)
+	private String 
+	 
+
+}

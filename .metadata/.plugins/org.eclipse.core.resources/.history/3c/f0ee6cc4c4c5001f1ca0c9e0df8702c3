@@ -1,0 +1,27 @@
+package com.project.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.project.repository.ResourceRepository;
+
+@Service
+public class DataService {
+	
+	//ResourceRepository 주입 (JPA 리포지토리)
+	@Autowired
+	private ResourceRepository resourceRepository;
+	
+	 // 데이터를 페이징 처리하여 조회하는 메서드
+    public Page<com.project.entity.Resource> getResources(int pageNo, int numOfRows) {
+        // Pageable 객체 생성 (페이지 번호와 한 페이지 당 항목 수)
+        Pageable pageable = PageRequest.of(pageNo, numOfRows);
+
+        // resourceRepository를 통해 데이터를 페이징 조회
+        return resourceRepository.findAll(pageable);  // 리포지토리에서 데이터를 반환
+	}
+
+}

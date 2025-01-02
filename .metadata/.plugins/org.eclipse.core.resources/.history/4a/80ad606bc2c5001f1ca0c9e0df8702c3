@@ -1,0 +1,51 @@
+package com.project.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.DTO.ApiResponse;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+@RestController
+@RequestMapping("/api/resources")
+public class ApiController {
+	
+	@PostMapping
+	public ResponseEntity<ApiResponse> getResources(@RequestBody ResourceRequest requestBody ) {
+		
+		int pageNo = requestBody.getPageNo();
+		int numOfRows = requestBody.getNumOfRows();
+		
+		//예시 데이터베이스 조회 로직(데이터가 비어있다면 null을 반환
+		List<Data> dataList = dataService.getData(pageNo, numOfRows);
+		
+		
+		//ApiResponse에 데이터 설정
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setResultCode("OK");
+		apiResponse.setResultMsg("정상");
+		apiResponse.setResultCount(8764);
+		apiResponse.setData(dataList);
+				
+		return ResponseEntity.ok(apiResponse);
+		
+	}
+	
+	//RequestBody 클래스를 정의
+	@Getter @Setter
+	public static class ResourceRequest {
+		private int pageNo;
+		private int numOfRows;
+		
+	}
+	
+
+}

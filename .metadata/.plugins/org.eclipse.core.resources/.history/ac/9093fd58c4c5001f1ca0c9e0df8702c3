@@ -1,0 +1,16 @@
+package com.project.DTO;
+
+import java.util.List;
+
+import org.apache.tomcat.util.file.ConfigurationSource.Resource;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class ApiResponse {
+    private String resultCode;
+    private String resultMsg;
+    private int resultCount;
+    private List<Resource> data;  // data 필드는 여러 자원 정보이므로 List로 처리
+}

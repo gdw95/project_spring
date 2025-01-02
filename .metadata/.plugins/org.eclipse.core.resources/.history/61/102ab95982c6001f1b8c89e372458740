@@ -1,0 +1,20 @@
+spring.application.name=Project
+server.port=8080
+
+#datasource setting
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:test
+spring.datasource.username=sa
+spring.datasource.password=
+
+#JPA setting
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+
+#ViewResolver setting
+spring.mvc.view.prefix=/WEB-INF/board
+spring.mvc.view.suffix=.jsp
+
+#OAuth2 클라이언트 설정 추가
